@@ -1,0 +1,42 @@
+# reference: https://hydra.cc/docs/tutorials/basic/your_first_app/using_config/
+train:
+  experiment_id: "2024-05-05 22:41:41.115323"
+  model_id: "caformer_s18.sail_in22k_ft_in1k_384"  # "tf_efficientnetv2_s.in21k"
+  epochs: 200
+  lr: 1e-4
+  lr_after_unfreeze: 1e-5
+  # incompatible with multi-input or multi-output models without modification
+  use_lr_finder: True
+  pretrained: True
+  early_stop_thresh: 10
+  loss_function: "seesaw"
+  worker_timeout_s: 360
+  image_resize: 384  # 224 for efficientnet_b0, 128-300+ efficientnet_v2s; 336 for eva-02
+  max_norm: 1.0
+  dropout_rate: 0.3
+  weight_decay: 1e-2 # 0.05 for metaformer  # originally 1e-2 for eva-02
+  balanced_sampler: False
+  fine_tune_after_n_epochs: 5
+  n_classes: 1784
+  lr_scheduler: "reducelronplateau"
+  lr_scheduler_patience: 4
+  train_progressively: False
+  # ~~~ check me (frequently changed settings below) ~~~
+  use_venom_loss: True
+  use_logitnorm: True
+  skip_frozen_epochs_load_failed_model: True
+  notes: trivial aug, double resize before randomcrop
+  batch_size: 40  # 128 works for up to tf_efficientnetv2_s.in21k @ 224
+  num_dataloader_workers: 16
+progressive-learning:
+  start_image_size: 384
+  end_image_size: 384
+  start_dropout: 0.1
+  end_dropout: 0.3
+  start_batch_size: 32
+  end_batch_size: 32
+  progression_epochs: 100
+evaluate:
+  experiment_id: "2024-04-26 13:31:54.470604"  # "2024-04-28 23:56:00.910245" (metaformer)
+  model_id: "tf_efficientnetv2_s.in21k"  # "MetaFG_meta_0"  # "tf_efficientnetv2_s.in21k"
+  image_size: 380

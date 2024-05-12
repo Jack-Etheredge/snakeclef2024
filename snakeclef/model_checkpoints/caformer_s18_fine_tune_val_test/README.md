@@ -1,0 +1,4 @@
+- logitnorm
+- no class weights on venom loss
+- higher than necessary (probably) dropout rate of 0.4
+    - paper (https://arxiv.org/pdf/2210.13452) used 0.2 for fine tuning on all but the largest CAFormer

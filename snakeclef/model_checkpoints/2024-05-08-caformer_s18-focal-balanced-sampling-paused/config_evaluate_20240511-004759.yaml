@@ -1,0 +1,48 @@
+# reference: https://hydra.cc/docs/tutorials/basic/your_first_app/using_config/
+train:
+  experiment_id: "2024-05-08-caformer_s18-focal-balanced-sampling-paused"  # "2024-05-06-caformer_s18-10x_venom_loss"
+  model_id: "caformer_s18.sail_in22k_ft_in1k_384"
+  # "MetaFG_0"
+  # "hf-hub:timm/eva02_large_patch14_clip_336.merged2b_ft_inat21" #  "caformer_s18.sail_in22k_ft_in1k_384"  # "tf_efficientnetv2_s.in21k"
+  epochs: 200
+  lr: 1e-3
+  lr_after_unfreeze: 5e-5  # manual decrease, but in reducelronplateau
+  pretrained: True
+  early_stop_thresh: 10
+  loss_function: "supconloss"  # "seesaw"
+  worker_timeout_s: 360
+  image_resize: 384 # 336 # 384 for caformer & metaformer  # 224 for efficientnet_b0, 128-300+ efficientnet_v2s; 336 for eva-02
+  max_norm: 1.0
+  dropout_rate: 0.4 # 0.2 for caformer (used 0.4 for first and best experiment; maybe that's better?)
+  weight_decay: 0.05 # 0.05 for caformer & metaformer  # originally 1e-2 for eva-02
+  balanced_sampler: True
+  fine_tune_after_n_epochs: 5
+  n_classes: 1784
+  lr_scheduler: "reducelronplateau"
+  lr_scheduler_patience: 4
+  train_progressively: False
+  # ~~~ check me (frequently changed settings below) ~~~
+  use_venom_loss: True
+  use_logitnorm: True
+  use_class_weights_venom_loss: False  # check me
+  use_lr_finder: False  # incompatible with multi-input or multi-output models without modification
+  notes: trivial aug, double resize before randomcrop
+  batch_size: 40 # 32 for metaformer # 40 for caformer  # 128 works for up to tf_efficientnetv2_s.in21k @ 224
+  num_dataloader_workers: 16
+train_aug:
+  trivial_aug: True
+  auto_aug: False
+  random_aug: False
+  gridmask_prob: null
+progressive-learning:
+  start_image_size: 384
+  end_image_size: 384
+  start_dropout: 0.1
+  end_dropout: 0.3
+  start_batch_size: 32
+  end_batch_size: 32
+  progression_epochs: 100
+evaluate:
+  experiment_id: "2024-05-08-caformer_s18-focal-balanced-sampling-paused" # "2024-05-05 22:41:41.115323"
+  model_id: "caformer_s18.sail_in22k_ft_in1k_384" # "caformer_s18.sail_in22k_ft_in1k_384"
+  image_size: 768 # 768

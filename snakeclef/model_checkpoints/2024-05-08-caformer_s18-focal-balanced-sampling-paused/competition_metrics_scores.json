@@ -1,0 +1,1 @@
+{"F1 Score": 51.56, "Accuracy": 65.57, "PSC": [32.05, 3.33, 8.17, 22.28], "PSC_total": [2019, 210, 124, 338], "Track1 Metric": 84.31, "Track2 Metric": 3735, "balanced_accuracy_known_classes": 0.5589413007575562, "accuracy_known_classes": 0.6557062436028659}
